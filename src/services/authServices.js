@@ -6,15 +6,14 @@ const jwt = require('jsonwebtoken')
 const envConfig = require('../configs/envConfig')
 const redisClient = require('../configs/redisConfig')
 
-
 const authService = {
     login: async (reqData) => {
         try {
-            const { username, password } = reqData
+            const { email, password } = reqData
 
-            const user = await UserModel.findOne({ username })
+            const user = await UserModel.findOne({ email })
             if (!user) {
-                throw new BadReq(errorData.USERNAME_NOT_FOUNDED)
+                throw new BadReq(errorData.EMAIL_NOT_FOUND)
             }
 
             const checkPassword = await bcrypt.compare(password, user.password)
@@ -56,16 +55,20 @@ const authService = {
     },
     register: async (reqData) => {
         try {
-            const { username, password, fullName, email, phone } = reqData
+            const { email, password, fullName, phone, confirmPassword } =
+                reqData
 
-            const checkUser = await UserModel.findOne({ username })
-            if (checkUser) {
-                throw new BadReq(errorData.USERNAME_EXISTED)
+            if (password !== confirmPassword) {
+                throw new BadReq(errorData.PASSWORD_DO_NOT_MATCH)
             }
-            const checkEmail = await UserModel.findOne({ email })
+
+            const checkEmail = await UserModel.findOne({
+                email: email.toLowerCase(),
+            })
             if (checkEmail) {
                 throw new BadReq(errorData.EMAIL_EXISTED)
             }
+
             const checkPhone = await UserModel.findOne({ phone })
             if (checkPhone) {
                 throw new BadReq(errorData.PHONE_EXISTED)
@@ -75,11 +78,10 @@ const authService = {
             const hashedPassword = await bcrypt.hash(password, salt)
 
             await UserModel.create({
-                username,
                 password: hashedPassword,
-                fullName,
                 email,
                 phone,
+                fullName,
             })
 
             return null

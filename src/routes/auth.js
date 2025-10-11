@@ -33,15 +33,15 @@ module.exports = router
  *           schema:
  *             type: object
  *             required:
- *               - username
+ *               - email
  *               - password
  *             properties:
- *               username:
+ *               email:
  *                 type: string
- *                 example: test1
+ *                 example: testuser1@gmail.com
  *               password:
  *                 type: string
- *                 example: 1111
+ *                 example: Test123!@#
  *     responses:
  *       200:
  *         description: Đăng nhập thành công
@@ -183,27 +183,27 @@ module.exports = router
  *           schema:
  *             type: object
  *             required:
- *               - username
- *               - password
- *               - phone
  *               - email
+ *               - phone
  *               - fullName
+ *               - password
+ *               - confirmPassword
  *             properties:
- *               username:
- *                 type: string
- *                 example: test1
- *               password:
- *                 type: string
- *                 example: 1111
- *               fullName:
- *                 type: string
- *                 example: Nguyễn Văn C
  *               email:
  *                 type: string
- *                 example: test@gmail.com
+ *                 example: testuser3@gmail.com
  *               phone:
  *                 type: string
- *                 example: 0234567891
+ *                 example: "0912345678"
+ *               fullName:
+ *                 type: string
+ *                 example: Trần Văn A
+ *               password:
+ *                 type: string
+ *                 example: Test123!@#
+ *               confirmPassword:
+ *                 type: string
+ *                 example: Test123!@#
  *     responses:
  *       200:
  *         description: Tạo user thành công

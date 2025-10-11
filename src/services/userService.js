@@ -25,12 +25,13 @@ const userServices = {
                 throw new BadReq(errorData.USER_NOT_FOUND)
             }
 
-            const { phone, email, fullName } = reqData
-            const checkEmail = await UserModel.findOne({ email })
+            const [checkPhone, checkEmail] = await Promise.all([
+                UserModel.findOne({ email }),
+                UserModel.findOne({ phone }),
+            ])
             if (checkEmail) {
                 throw new BadReq(errorData.EMAIL_EXISTED)
             }
-            const checkPhone = await UserModel.findOne({ phone })
             if (checkPhone) {
                 throw new BadReq(errorData.PHONE_EXISTED)
             }
@@ -50,7 +51,10 @@ const userServices = {
         if (!user) {
             throw new BadReq(errorData.USER_NOT_FOUND)
         }
-        const { oldPassword, newPassword } = reqData
+        const { oldPassword, newPassword, confirmPassword } = reqData
+        if (newPassword !== confirmPassword) {
+            throw new BadReq(errorData.PASSWORD_DO_NOT_MATCH)
+        }
         const checkPassword = await bcrypt.compare(oldPassword, user.password)
         if (!checkPassword) {
             throw new BadReq(errorData.WRONG_PASSWORD)

@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const path = require('path')
 
 //config
 const envConfig = require('./configs/envConfig')
@@ -17,9 +18,10 @@ const app = express()
 
 swaggerConfig(app)
 dbConfig()
-
-app.use(cors({ origin: '*' }))
 app.use(express.json())
+app.use(cors({ origin: '*' }))
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')))
+
 app.use(authenticated)
 
 routeConfig(app)

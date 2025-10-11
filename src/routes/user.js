@@ -6,7 +6,6 @@ const validate = require('../middlewares/validation')
 const userValidation = require('../validations/userValidation')
 
 router.get('/getInfo', userController.getInfo)
-router.post('/update', validate(userValidation.update), userController.update)
 router.post(
     '/changePassword',
     validate(userValidation.changePassword),
@@ -53,120 +52,13 @@ module.exports = router
  *                   properties:
  *                     email:
  *                       type: string
- *                       example: nguyenvana@gmail.com
- *                     username:
- *                       type: string
- *                       example: nguyenvana
+ *                       example: tranvana@gmail.com
  *                     fullName:
  *                       type: string
- *                       example: Nguyễn Văn A
+ *                       example: Trần Văn A
  *                     phone:
  *                       type: string
  *                       example: 0987654321
- *       401:
- *         description: Chưa đăng nhập
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: integer
- *                   example: 401
- *                 code:
- *                   type: integer
- *                   example: -1
- *                 message:
- *                   type: string
- *                   example: Không có token
- *                 data:
- *                   type: string
- *                   example: null
- *       403:
- *         description: Không có quyền truy cập
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: integer
- *                   example: 403
- *                 code:
- *                   type: integer
- *                   example: -1
- *                 message:
- *                   type: string
- *                   example: Không có quyền
- *                 data:
- *                   type: string
- *                   example: null
- *       500:
- *         description: Lỗi server
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 code:
- *                   type: integer
- *                   example: 500
- *                 message:
- *                   type: string
- *                   example: Lỗi server!
- *                 data:
- *                   type: string
- *                   example: null
- */
-
-/**
- * @swagger
- * /user/update:
- *   post:
- *     summary: Cập nhật thông tin user
- *     security:
- *       - bearerAuth: []
- *     tags: [User]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - phone
- *               - email
- *               - fullName
- *             properties:
- *               fullName:
- *                 type: string
- *                 example: Nguyễn Văn B
- *               phone:
- *                 type: string
- *                 example: 0912345678
- *               email:
- *                 type: string
- *                 example: test@gmail.com
- *     responses:
- *       200:
- *         description: Cập nhật thành công
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: integer
- *                   example: 200
- *                 code:
- *                   type: integer
- *                   example: 1
- *                 message:
- *                   type: string
- *                   example: OK!
- *                 data:
- *                   type: string
- *                   example: null
  *       401:
  *         description: Chưa đăng nhập
  *         content:
@@ -240,11 +132,15 @@ module.exports = router
  *             required:
  *               - oldPassword
  *               - newPassword
+ *               - confirmPassword
  *             properties:
  *               oldPassword:
  *                 type: string
  *                 example: admin123
  *               newPassword:
+ *                 type: string
+ *                 example: newPass456
+ *               confirmPassword:
  *                 type: string
  *                 example: newPass456
  *     responses:

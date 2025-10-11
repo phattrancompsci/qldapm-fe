@@ -6,9 +6,8 @@ const userSeeder = async () => {
     await UserModel.insertMany([
         {
             _id: new Types.ObjectId(),
-            username: 'test1',
             password:
-                '$2a$10$MSXSnaHzyjn6wbZD8C/WqeI7Fmp7sPtn2PO96.WhuIgTKTghofuGq',
+                '$2a$10$jNIrHiuO1Rv8GIsbMhacke0kzpc2ZRnlNm7lejO95CQlOokgWMveq',
             phone: '0912345678',
             email: 'testuser1@gmail.com',
             fullName: 'Trần Văn A',
@@ -16,9 +15,8 @@ const userSeeder = async () => {
         },
         {
             _id: new Types.ObjectId(),
-            username: 'test2',
             password:
-                '$2a$10$MSXSnaHzyjn6wbZD8C/WqeI7Fmp7sPtn2PO96.WhuIgTKTghofuGq',
+                '$2a$10$jNIrHiuO1Rv8GIsbMhacke0kzpc2ZRnlNm7lejO95CQlOokgWMveq',
             phone: '0912345678',
             email: 'testuser2@gmail.com',
             fullName: 'Trần Văn B',
