@@ -14,6 +14,9 @@ const options = {
             {
                 url: `http://localhost:${envConfig.PORT}${envConfig.BASE_URL}`,
             },
+            {
+                url: `https://qldapm-be.onrender.com${envConfig.BASE_URL}`,
+            },
         ],
     },
     apis: ['src/docs/*.js', 'src/routes/*.js'],
