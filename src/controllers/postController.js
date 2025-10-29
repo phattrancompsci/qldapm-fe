@@ -1,10 +1,10 @@
-const stationService = require('../services/stationServices')
+const postService = require('../services/postService')
 const response = require('../utils/response/response')
 
-const stationController = {
+const postController = {
     getAll: async (req, res, next) => {
         try {
-            const result = await stationService.getAll(req.query)
+            const result = await postService.getAll(req.query)
             return res.status(200).json(response.success(result))
         } catch (error) {
             next(error)
@@ -12,7 +12,7 @@ const stationController = {
     },
     getById: async (req, res, next) => {
         try {
-            const result = await stationService.getById(req.params.stationId)
+            const result = await postService.getById(req.params.postId)
             return res.status(200).json(response.success(result))
         } catch (error) {
             next(error)
@@ -20,12 +20,7 @@ const stationController = {
     },
     create: async (req, res, next) => {
         try {
-            const imagePath = req.file ? req.file.path : null
-            const reqData = {
-                ...req.body,
-                image: imagePath,
-            }
-            const result = await stationService.create(reqData)
+            const result = await postService.create(req.body)
             return res.status(200).json(response.success(result))
         } catch (error) {
             next(error)
@@ -33,15 +28,7 @@ const stationController = {
     },
     update: async (req, res, next) => {
         try {
-            const imagePath = req.file ? req.file.path : null
-            const reqData = {
-                ...req.body,
-                image: imagePath,
-            }
-            const result = await stationService.update(
-                req.params.stationId,
-                reqData,
-            )
+            const result = await postService.update(req.params.postId, req.body)
             return res.status(200).json(response.success(result))
         } catch (error) {
             next(error)
@@ -49,11 +36,11 @@ const stationController = {
     },
     delete: async (req, res, next) => {
         try {
-            const result = await stationService.delete(req.params.stationId)
+            const result = await postService.delete(req.params.postId)
             return res.status(200).json(response.success(result))
         } catch (error) {
             next(error)
         }
     },
 }
-module.exports = stationController
+module.exports = postController

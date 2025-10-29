@@ -1,6 +1,9 @@
+const PostModel = require('../models/post')
 const StationModel = require('../models/station')
+const constants = require('../utils/constants/constants')
 const BadReq = require('../utils/response/badRequest')
 const errorData = require('../utils/response/errorData')
+const postService = require('./postService')
 
 const stationService = {
     getAll: async (query) => {
@@ -89,10 +92,22 @@ const stationService = {
     },
     delete: async (stationId) => {
         try {
-            const station = await StationModel.findByIdAndDelete(stationId)
+            const station = await StationModel.findById(stationId)
             if (!station) {
                 throw new BadReq(errorData.STATION_NOT_FOUND)
             }
+
+            const post = await PostModel.find({ stationId })
+            const chargingPost = post.find(
+                (p) => p.state === constants.STATE_POST.CHARGING,
+            )
+            if (chargingPost) {
+                throw new BadReq(errorData.POST_CHARGING)
+            }
+            await Promise.all(post.map((p) => postService.delete(p._id)))
+
+            await StationModel.findByIdAndDelete(stationId)
+
             return null
         } catch (error) {
             throw error

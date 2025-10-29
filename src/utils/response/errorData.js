@@ -43,5 +43,26 @@ const errorCode = {
         code: 10,
         message: 'Địa chỉ của trạm đã được sử dụng',
     },
+    POST_NOT_FOUND: {
+        code: 11,
+        message: 'Trụ sạc không tồn tại',
+    },
+    POST_NAME_EXISTED: {
+        code: 12,
+        message: 'Tên này đã được sử dụng ở một trụ sạc khác',
+    },
+    POST_CHARGING: {
+        code: 13,
+        message: 'Trạm đang có xe sạc, không thể cập nhật hoặc xóa',
+    },
+    POST_UNAVAILABLE: {
+        code: 14,
+        message:
+            'Trạm không thể sạc được do một trong các lỗi sau: lỗi, đang bảo trị, ngừng hoạt động, có xe sạc',
+    },
+    POST_NOT_CHARGING: {
+        code: 15,
+        message: 'Trạm đang không có xe sạc',
+    },
 }
 module.exports = errorCode

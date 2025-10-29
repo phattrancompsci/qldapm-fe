@@ -21,6 +21,10 @@ const envConfig = {
     //jwt
     JWT_ACCESS_TOKEN_PRIMARY_KEY: process.env.JWT_ACCESS_TOKEN_PRIMARY_KEY,
     JWT_ACCESS_TOKEN_EXPIRES: process.env.JWT_ACCESS_TOKEN_EXPIRES,
+
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
 }
 
 module.exports = envConfig
