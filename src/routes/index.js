@@ -6,11 +6,13 @@ const userRouter = require('./user')
 const authRouter = require('./auth')
 const stationRouter = require('./station')
 const postRouter = require('./post')
+const chargeDataRouter = require('./chargeData')
 
 router.use('/user', userRouter)
 router.use('/auth', authRouter)
 router.use('/station', stationRouter)
 router.use('/post', postRouter)
+router.use('/chargeData', chargeDataRouter)
 
 const routeConfig = (app) => {
     app.use(envConfig.BASE_URL, router)

@@ -11,5 +11,12 @@ const constants = {
         INACTIVE: 'inactive',
         ERROR: 'error',
     },
+    CAR_BRANDS: {
+        VINFAST: 'VinFast',
+        BYD: 'BYD',
+        MG: 'MG',
+        WULING: 'Wuling',
+        HUYNDAI: 'Huyndai',
+    },
 }
 module.exports = constants
