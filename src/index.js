@@ -1,5 +1,4 @@
 const express = require('express')
-const cors = require('cors')
 const path = require('path')
 
 //config
@@ -9,6 +8,7 @@ require('./configs/redisConfig')
 const swaggerConfig = require('./docs/swaggerConfig')
 const routeConfig = require('./routes')
 const authenticated = require('./middlewares/auth')
+const corsMiddleware = require('./middlewares/cors')
 
 //error
 const BadReq = require('./utils/response/badRequest')
@@ -19,7 +19,7 @@ const app = express()
 swaggerConfig(app)
 dbConfig()
 app.use(express.json())
-app.use(cors({ origin: '*' }))
+app.use(corsMiddleware)
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')))
 
 app.use(authenticated)
