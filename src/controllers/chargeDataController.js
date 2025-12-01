@@ -9,5 +9,21 @@ const chargeDataController = {
             next(error)
         }
     },
+    getByYear: async (req, res, next) => {
+        try {
+            const result = await chargeDataService.getByYear(req.params.year)
+            return res.status(200).json(response.success(result))
+        } catch (error) {
+            next(error)
+        }
+    },
+    getAll: async (req, res, next) => {
+        try {
+            const result = await chargeDataService.getAll(req.query)
+            return res.status(200).json(response.success(result))
+        } catch (error) {
+            next(error)
+        }
+    },
 }
 module.exports = chargeDataController

@@ -38,6 +38,87 @@ const chargeDataService = {
             throw error
         }
     },
+    getByYear: async (year) => {
+        try {
+            const numYear = parseInt(year, 10)
+
+            const data = await ChargeDataModel.aggregate([
+                {
+                    $match: {
+                        startTime: {
+                            $gte: new Date(numYear, 0, 1),
+                            $lt: new Date(numYear + 1, 0, 1),
+                        },
+                    },
+                },
+                {
+                    $group: {
+                        _id: { month: { $month: '$startTime' } },
+                        count: { $sum: 1 },
+                        items: { $push: '$$ROOT' },
+                    },
+                },
+                { $sort: { '_id.month': 1 } },
+            ])
+            data.forEach((d) => {
+                d['totalElectric'] = d.items.reduce((acc, cur) => {
+                    return (acc += cur.electricalConsumption)
+                }, 0)
+            })
+
+            const result = { year }
+            for (let i = 1; i <= 12; ++i) {
+                result[i] = {}
+            }
+
+            data.forEach((d) => {
+                const electric = d.items.reduce((acc, cur) => {
+                    return (acc += cur.electricalConsumption)
+                }, 0)
+                result[d._id.month] = {
+                    revenue: electric * 7600,
+                    quantity: d.count,
+                    electric,
+                }
+            })
+
+            return result
+        } catch (error) {
+            throw error
+        }
+    },
+    getAll: async (query) => {
+        let { page = 1, limit = 10 } = query
+        page = Number(page)
+        limit = Number(limit)
+
+        const [items, totalItems] = await Promise.all([
+            ChargeDataModel.find({})
+                .select('-createdAt -updatedAt -__v')
+                .skip((page - 1) * limit)
+                .limit(limit)
+                .populate('stationId', 'name')
+                .populate('postId', 'name'),
+            ChargeDataModel.countDocuments({}),
+        ])
+
+        const result = items.map((i) => ({
+            _id: i._id,
+            vehicleType: i.carType,
+            timeStart: i.startTime,
+            duration: i.chargeTime,
+            electric: i.electricalConsumption,
+            station: i.stationId.name,
+            charger: i.postId.name,
+        }))
+
+        return {
+            result,
+            page,
+            totalItems,
+            totalPages: Math.ceil(totalItems / limit),
+        }
+    },
 }
 
 module.exports = chargeDataService
