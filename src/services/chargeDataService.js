@@ -1,3 +1,4 @@
+const { Types } = require('mongoose')
 const ChargeDataModel = require('../models/chargeData')
 const StationModel = require('../models/station')
 const PostModel = require('../models/post')
@@ -16,7 +17,10 @@ const chargeDataService = {
                 chargeTime,
                 electricalConsumption,
             } = reqData
-            const station = await StationModel.findById(stationId)
+            const station = await StationModel.findOne({
+                _id: new Types.ObjectId(stationId),
+                isActive: true,
+            })
             if (!station) {
                 throw new BadReq(errorCode.STATION_NOT_FOUND)
             }

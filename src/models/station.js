@@ -37,6 +37,10 @@ const stationSchema = new Schema(
             enum: Object.values(constants.STATE_STATION),
             default: constants.STATE_STATION.AVAILABLE,
         },
+        isActive: {
+            type: Boolean,
+            default: true,
+        },
     },
     { timestamps: true },
 )

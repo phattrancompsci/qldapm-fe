@@ -1,3 +1,4 @@
+const { Types } = require('mongoose')
 const BadReq = require('../utils/response/badRequest')
 const errorData = require('../utils/response/errorData')
 const PostModel = require('../models/post')
@@ -8,7 +9,10 @@ const postService = {
     create: async (reqData) => {
         try {
             const { stationId, name, power, supportBrands, state } = reqData
-            const checkStation = await StationModel.findById(stationId)
+            const checkStation = await StationModel.findOne({
+                _id: new Types.ObjectId(stationId),
+                isActive: true,
+            })
             if (!checkStation) {
                 throw new BadReq(errorData.STATION_NOT_FOUND)
             }
@@ -34,7 +38,10 @@ const postService = {
             let { limit = 10, page = 1 } = query
             limit = Number(limit)
             page = Number(page)
-            const checkStation = await StationModel.findById(stationId)
+            const checkStation = await StationModel.findOne({
+                _id: new Types.ObjectId(stationId),
+                isActive: true,
+            })
             if (!checkStation) {
                 throw new BadReq(errorData.STATION_NOT_FOUND)
             }

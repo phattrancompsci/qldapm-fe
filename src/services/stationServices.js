@@ -1,3 +1,4 @@
+const { Types } = require('mongoose')
 const PostModel = require('../models/post')
 const StationModel = require('../models/station')
 const constants = require('../utils/constants/constants')
@@ -12,7 +13,7 @@ const stationService = {
             limit = Number(limit)
             page = Number(page)
             const [items, totalItems] = await Promise.all([
-                StationModel.find({})
+                StationModel.find({ isActive: true })
                     .skip((page - 1) * limit)
                     .limit(limit),
                 StationModel.countDocuments({}),
@@ -29,7 +30,10 @@ const stationService = {
     },
     getById: async (stationId) => {
         try {
-            const result = await StationModel.findById(stationId)
+            const result = await StationModel.findOne({
+                _id: new Types.ObjectId(stationId),
+                isActive: true,
+            })
             if (!result) {
                 throw new BadReq(errorData.STATION_NOT_FOUND)
             }
@@ -45,6 +49,7 @@ const stationService = {
                 'address.city': city,
                 'address.district': district,
                 'address.detail': detail,
+                isActive: true,
             })
             if (addressCheck) {
                 throw new BadReq(errorData.ADDRESS_STATION_EXISTED)
@@ -65,7 +70,10 @@ const stationService = {
     },
     update: async (stationId, reqData) => {
         try {
-            const station = await StationModel.findById(stationId)
+            const station = await StationModel.findOne({
+                _id: new Types.ObjectId(stationId),
+                isActive: true,
+            })
             if (!station) {
                 throw new BadReq(errorData.STATION_NOT_FOUND)
             }
@@ -75,6 +83,7 @@ const stationService = {
                 'address.district': district,
                 'address.detail': detail,
                 _id: { $ne: stationId },
+                isActive: true,
             })
             if (addressCheck) {
                 throw new BadReq(errorData.ADDRESS_STATION_EXISTED)
@@ -92,7 +101,10 @@ const stationService = {
     },
     delete: async (stationId) => {
         try {
-            const station = await StationModel.findById(stationId)
+            const station = await StationModel.findOne({
+                _id: new Types.ObjectId(stationId),
+                isActive: true,
+            })
             if (!station) {
                 throw new BadReq(errorData.STATION_NOT_FOUND)
             }
@@ -106,7 +118,7 @@ const stationService = {
             }
             await Promise.all(post.map((p) => postService.delete(p._id)))
 
-            await StationModel.findByIdAndDelete(stationId)
+            await StationModel.findByIdAndUpdate(stationId, { isActive: false })
 
             return null
         } catch (error) {

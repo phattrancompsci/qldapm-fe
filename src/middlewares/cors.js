@@ -4,6 +4,7 @@ const response = require('../utils/response/response')
 const allowedOrigin = [
     'http://localhost:3000',
     'https://qldapm-be.onrender.com',
+    'https://station-manage.vercel.app',    
 ]
 
 const corsMiddleware = cors({
