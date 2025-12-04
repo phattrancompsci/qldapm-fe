@@ -99,6 +99,7 @@ const chargeDataService = {
         const [items, totalItems] = await Promise.all([
             ChargeDataModel.find({})
                 .select('-createdAt -updatedAt -__v')
+                .sort({ startTime: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit)
                 .populate('stationId', 'name')
@@ -109,7 +110,7 @@ const chargeDataService = {
         const result = items.map((i) => ({
             _id: i._id,
             vehicleType: i.carType,
-            timeStart: i.startTime,
+            timeStart: new Date(i.startTime).toLocaleString('vi-VN'),
             duration: i.chargeTime,
             electric: i.electricalConsumption,
             station: i.stationId.name,
